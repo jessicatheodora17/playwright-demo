@@ -1,52 +1,41 @@
 import { test, expect } from '@playwright/test';
+import { LoginTask } from '../screenplay/tasks/login';
+import { Actor } from '../screenplay/actors/actors';
 
-test('Success Login with Standard User', async ({ page }) => {
+test('Success Login with Standard User', async ({ page, baseURL }) => {
     // go to deisignated URL
-    await page.goto('https://saucedemo.com/v1');
+    await page.goto(`${baseURL}`);
     // expect it to show login page
     await expect(page.locator('.login-button')).toBeDefined;
-
+    const actor = new Actor('User', page);
     // input username and password then click login button
-    await page.locator('[id="user-name"]').click()
-    await page.locator('[id="user-name"]').fill('standard_user')
-    await page.locator('[id="password"]').click()
-    await page.locator('[id="password"]').fill('secret_sauce')
-    await page.locator('[id="login-button"]').click()
+    await actor.attemptTo(LoginTask('standard_user', 'secret_sauce'));
 
     // assert success got into product page
-    await expect(page.locator('[class="product_label"]')).toContainText('Product')
+    await expect(page.locator('[class="product_label"]')).toContainText('Product');
   });
 
-  test('Login with Locked Out User', async ({ page }) => {
+  test('Login with Locked Out User', async ({ page, baseURL }) => {
     // go to deisignated URL
-    await page.goto('https://saucedemo.com/v1');
+    await page.goto(`${baseURL}`);
     // expect it to show login page
     await expect(page.locator('.login-button')).toBeDefined;
-    
+    const actor = new Actor('User', page);
     // input username and password then click login button
-    await page.locator('[id="user-name"]').click()
-    await page.locator('[id="user-name"]').fill('locked_out_user')
-    await page.locator('[id="password"]').click()
-    await page.locator('[id="password"]').fill('secret_sauce')
-    await page.locator('[id="login-button"]').click()
+    await actor.attemptTo(LoginTask('locked_out_user', 'secret_sauce'));
 
     // assert success got into product page
     await expect(page.locator('[data-test="error"]')).toContainText('Sorry, this user has been locked out.')
   });
 
-  test('Login with Invalid User', async ({ page }) => {
+  test('Login with Invalid User', async ({ page, baseURL }) => {
     // go to deisignated URL
-    await page.goto('https://saucedemo.com/v1');
+    await page.goto(`${baseURL}`);
     // expect it to show login page
     await expect(page.locator('.login-button')).toBeDefined;
-    
+    const actor = new Actor('User', page);
     // input username and password then click login button
-    await page.locator('[id="user-name"]').click()
-    await page.locator('[id="user-name"]').fill('invalid')
-    await page.locator('[id="password"]').click()
-    await page.locator('[id="password"]').fill('secret_sauce')
-    await page.locator('[id="login-button"]').click()
-
+    await actor.attemptTo(LoginTask('invalid', 'secret_sauce'));
     // assert success got into product page
     await expect(page.locator('[data-test="error"]')).toContainText('Username and password do not match any user in this service')
   });
