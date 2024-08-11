@@ -3,7 +3,7 @@ import { LoginTask } from '../screenplay/tasks/login';
 import { Actor } from '../screenplay/actors/actors';
 
 test('Success Login with Standard User', async ({ page, baseURL }) => {
-    // go to deisignated URL
+    // go to designated URL
     await page.goto(`${baseURL}`);
     // expect it to show login page
     await expect(page.locator('.login-button')).toBeDefined;
@@ -16,7 +16,7 @@ test('Success Login with Standard User', async ({ page, baseURL }) => {
   });
 
   test('Login with Locked Out User', async ({ page, baseURL }) => {
-    // go to deisignated URL
+    // go to designated URL
     await page.goto(`${baseURL}`);
     // expect it to show login page
     await expect(page.locator('.login-button')).toBeDefined;
@@ -29,7 +29,7 @@ test('Success Login with Standard User', async ({ page, baseURL }) => {
   });
 
   test('Login with Invalid User', async ({ page, baseURL }) => {
-    // go to deisignated URL
+    // go to designated URL
     await page.goto(`${baseURL}`);
     // expect it to show login page
     await expect(page.locator('.login-button')).toBeDefined;
