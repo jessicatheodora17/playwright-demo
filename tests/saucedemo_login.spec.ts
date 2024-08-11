@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginTask } from '../screenplay/tasks/login';
+import { doLogin } from '../screenplay/tasks/login';
 import { Actor } from '../screenplay/actors/actors';
 
 test('Success Login with Standard User', async ({ page, baseURL }) => {
@@ -9,7 +9,7 @@ test('Success Login with Standard User', async ({ page, baseURL }) => {
     await expect(page.locator('.login-button')).toBeDefined;
     const actor = new Actor('User', page);
     // input username and password then click login button
-    await actor.attemptTo(LoginTask('standard_user', 'secret_sauce'));
+    await actor.attemptTo(doLogin('standard_user', 'secret_sauce'));
 
     // assert success got into product page
     await expect(page.locator('[class="product_label"]')).toContainText('Product');
@@ -22,7 +22,7 @@ test('Success Login with Standard User', async ({ page, baseURL }) => {
     await expect(page.locator('.login-button')).toBeDefined;
     const actor = new Actor('User', page);
     // input username and password then click login button
-    await actor.attemptTo(LoginTask('locked_out_user', 'secret_sauce'));
+    await actor.attemptTo(doLogin('locked_out_user', 'secret_sauce'));
 
     // assert success got into product page
     await expect(page.locator('[data-test="error"]')).toContainText('Sorry, this user has been locked out.')
@@ -35,7 +35,7 @@ test('Success Login with Standard User', async ({ page, baseURL }) => {
     await expect(page.locator('.login-button')).toBeDefined;
     const actor = new Actor('User', page);
     // input username and password then click login button
-    await actor.attemptTo(LoginTask('invalid', 'secret_sauce'));
+    await actor.attemptTo(doLogin('invalid', 'secret_sauce'));
     // assert success got into product page
     await expect(page.locator('[data-test="error"]')).toContainText('Username and password do not match any user in this service')
   });
